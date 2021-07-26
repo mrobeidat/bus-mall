@@ -1,10 +1,12 @@
 'use strict';
 
 // let divElement = document.getElementById('container');
+
+
+let container = document.getElementById('container');
 let leftImage = document.getElementById('left-img');
 let middleImage = document.getElementById('middle-img');
 let rightImage = document.getElementById('right-img');
-// let button = document.getElementById('view');
 
 let maxAttempts = 25;
 let userAttempts = 0;
@@ -19,7 +21,6 @@ function Product(name, src) {
     this.name = name;
     this.source = src;
     this.votes = 0;
-
     this.shown = 0;
 
     Product.all.push(this);
@@ -67,22 +68,32 @@ function renderThreeImages() {
         middleImageIndex = getRandomIndex();
     }
     leftImage.src = Product.all[leftImageIndex].source;
+    Product.all[leftImageIndex].shown++;
+
     middleImage.src = Product.all[middleImageIndex].source;
+    Product.all[middleImageIndex].shown++;
+
     rightImage.src = Product.all[rightImageIndex].source;
+    Product.all[rightImageIndex].shown++;
+
 
 }
 renderThreeImages();
 
 
-leftImage.addEventListener('click', clicker)
-middleImage.addEventListener('click', clicker)
-rightImage.addEventListener('click', clicker)
-// button.addEventListener('click', view)
+// leftImage.addEventListener('click', clicker)
+// middleImage.addEventListener('click', clicker)
+// rightImage.addEventListener('click', clicker)
+
+
+container.addEventListener('click', clicker)
+
+
 
 function clicker(event) {
+
     
     console.log(leftImageIndex)
-    userAttempts++;
     // console.log(userAttempts);
     if (userAttempts < maxAttempts) {
         if (event.target.id === 'left-img') {
@@ -97,10 +108,14 @@ function clicker(event) {
 
         }
 
-        else {
+        else if (event.target.id === 'middle-img') {
 
             Product.all[middleImageIndex].votes++;
+        }
+        else {
 
+            alert('please click on one of the images');
+            userAttempts--;
         }
 
         renderThreeImages();
@@ -108,8 +123,15 @@ function clicker(event) {
     }
     else {
 
-       
-        let list = document.getElementById('results-list');
+       let buttonEl=document.getElementById('btn');
+
+       buttonEl.hidden=false;
+
+       buttonEl.addEventListener('click', showing);
+
+       function showing (event) {
+
+         let list = document.getElementById('results-list');
 
         for (let i = 0; i < Product.all.length; i++) {
 
@@ -117,15 +139,47 @@ function clicker(event) {
 
             list.appendChild(listItems);
 
-            listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
+            listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes and was seen ${Product.all[i].shown} times`
 
         }
+        buttonEl.removeEventListener('click', showing);
 
-        leftImage.removeEventListener('click', clicker)
-        middleImage.removeEventListener('click', clicker)
-        rightImage.removeEventListener('click', clicker)
+           
+       }
+        // let list = document.getElementById('results-list');
+
+        // for (let i = 0; i < Product.all.length; i++) {
+
+        //     let listItems = document.createElement('li');
+
+        //     list.appendChild(listItems);
+
+        //     listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
+
+        // }
+
+        // leftImage.removeEventListener('click', clicker)
+        // middleImage.removeEventListener('click', clicker)
+        // rightImage.removeEventListener('click', clicker)
+        container.removeEventListener('click', clicker);
+
 
     }
+    userAttempts++;
 
 }
 
+
+
+
+//  let list = document.getElementById('results-list');
+
+//         for (let i = 0; i < Product.all.length; i++) {
+
+//             let listItems = document.createElement('li');
+
+//             list.appendChild(listItems);
+
+//             listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
+
+//         }
