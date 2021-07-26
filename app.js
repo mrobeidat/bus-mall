@@ -128,5 +128,3 @@ function clicker(event) {
     }
 
 }
-
-
