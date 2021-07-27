@@ -35,6 +35,8 @@ function Product(name, src) {
     Product.all.push(this);
 
     namesArr.push(this.name);
+    // shownArr.push(this.shown);
+    
 }
 
 
@@ -193,9 +195,9 @@ function clicker(event) {
 
 
         for (let i = 0; i < Product.all.length; i++) {
-            console.log(Product.all[i].votes);
+            // console.log(Product.all[i].votes);
             votesArr.push(Product.all[i].votes);
-            shownArr.push(Product.all[i].votes);
+            shownArr.push(Product.all[i].shown);
 
         }
         // let list = document.getElementById('results-list');
@@ -220,6 +222,18 @@ function clicker(event) {
     userAttempts++;
 
 }
+let reset=document.querySelector('reset');
+let divId=document.querySelector('container');
+
+reset.addEventListener('click', () => {
+
+
+});
+
+
+
+
+
 
 
 //  let list = document.getElementById('results-list');
