@@ -36,11 +36,15 @@ function Product(name, src) {
 
     namesArr.push(this.name);
     // shownArr.push(this.shown);
-    
+
+    updateStorage();
 }
 
 
 Product.all = [];
+
+// local storage 
+
 
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
@@ -90,7 +94,10 @@ function renderThreeImages() {
     Product.all[rightImageIndex].shown++;
 
 
-preventRepetition=[leftImageIndex,rightImageIndex,middleImageIndex];
+    preventRepetition = [leftImageIndex, rightImageIndex, middleImageIndex];
+
+
+
 }
 renderThreeImages();
 
@@ -99,16 +106,18 @@ renderThreeImages();
 // middleImage.addEventListener('click', clicker)
 // rightImage.addEventListener('click', clicker)
 
-
 container.addEventListener('click', clicker)
 
 
 
 function clicker(event) {
 
-    console.log(leftImageIndex)
+
     // console.log(userAttempts);
+
     if (userAttempts < maxAttempts) {
+
+
         if (event.target.id === 'left-img') {
 
             Product.all[leftImageIndex].votes++;
@@ -132,7 +141,6 @@ function clicker(event) {
         }
 
         renderThreeImages();
-
     }
     else {
 
@@ -196,9 +204,10 @@ function clicker(event) {
 
         for (let i = 0; i < Product.all.length; i++) {
             // console.log(Product.all[i].votes);
+           
             votesArr.push(Product.all[i].votes);
-            shownArr.push(Product.all[i].shown);
 
+            shownArr.push(Product.all[i].shown);
         }
         // let list = document.getElementById('results-list');
 
@@ -218,40 +227,149 @@ function clicker(event) {
         container.removeEventListener('click', clicker);
 
         // showChart();
+
+
     }
-    userAttempts++;
+
+    userAttempts++;     
 
 }
-let reset=document.querySelector('reset');
-let divId=document.querySelector('container');
-
-reset.addEventListener('click', () => {
-
-
-});
 
 
 
 
 
 
-
-//  let list = document.getElementById('results-list');
-
-//         for (let i = 0; i < Product.all.length; i++) {
-
-//             let listItems = document.createElement('li');
-
-//             list.appendChild(listItems);
-
-//             listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
-
-//         }
+function updateStorage() {
 
 
+    let stringifyProducts = JSON.stringify(Product.all);
+    console.log(Product.all);
+
+    localStorage.setItem('chart', votesArr);
+    // localStorage.setItem('shown', stringifyProducts);
+
+}
+
+
+function getVotes() {
+
+    let data = localStorage.getItem('chart');
+
+
+    if (data !== null) {
+        Product.all = JSON.parse(data);
+
+        showChart();
+    //    votesArr = parsedArr;
+
+    }
+}
 
 
 
 
+    //  let list = document.getElementById('results-list');
+
+    //         for (let i = 0; i < Product.all.length; i++) {
+
+    //             let listItems = document.createElement('li');
+
+    //             list.appendChild(listItems);
+
+    //             listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
+
+    //         }
 
 
+
+    function showChart() {
+
+       
+        const data = {
+            labels: namesArr,
+            datasets: [{
+                label: 'Votes',
+                data: votesArr,
+
+                backgroundColor: [
+                    // 'rgba(255, 99, 132, 0.2)',
+                    // // 'rgba(255, 159, 64, 0.2)',
+                    // // 'rgba(255, 205, 86, 0.2)',
+                    // // 'rgba(75, 192, 192, 0.2)',
+                    // // 'rgba(54, 162, 235, 0.2)',
+                    // // 'rgba(153, 102, 255, 0.2)',
+                    // // 'rgba(201, 203, 207, 0.2)'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    // 'rgb(255, 99, 132)',
+                    // 'rgb(255, 159, 64)',
+                    // 'rgb(255, 205, 86)',
+                    // 'rgb(75, 192, 192)',
+                    // 'rgb(54, 162, 235)',
+                    // 'rgb(153, 102, 255)',
+                    // 'rgb(201, 203, 207)'
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Shown',
+                data: shownArr,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                ],
+                borderWidth: 1
+            }
+
+            ]
+        };
+
+        const config = {
+            scaleFontColor: "black",
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+     
+    }
+
+    updateStorage();
