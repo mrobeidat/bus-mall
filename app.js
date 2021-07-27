@@ -93,7 +93,11 @@ function renderThreeImages() {
     rightImage.src = Product.all[rightImageIndex].source;
     Product.all[rightImageIndex].shown++;
 
+
     preventRepetition = [leftImageIndex, rightImageIndex, middleImageIndex];
+
+
+
 }
 renderThreeImages();
 
@@ -108,10 +112,7 @@ container.addEventListener('click', clicker)
 
 function clicker(event) {
 
-   
 
-
-    // console.log(leftImageIndex)
     // console.log(userAttempts);
 
     if (userAttempts < maxAttempts) {
@@ -143,6 +144,15 @@ function clicker(event) {
     }
     else {
 
+       let buttonEl=document.getElementById('btn');
+
+       buttonEl.hidden=false;
+
+       buttonEl.addEventListener('click', showing);
+
+       function showing (event) {
+
+         let list = document.getElementById('results-list');
         let buttonEl = document.getElementById('btn');
 
         buttonEl.hidden = false;
@@ -166,8 +176,30 @@ function clicker(event) {
             }
             buttonEl.removeEventListener('click', showing);
 
+            listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes and was seen ${Product.all[i].shown} times`
+
 
         }
+        buttonEl.removeEventListener('click', showing);
+
+           
+       }
+        // let list = document.getElementById('results-list');
+
+        // for (let i = 0; i < Product.all.length; i++) {
+
+        //     let listItems = document.createElement('li');
+
+        //     list.appendChild(listItems);
+
+        //     listItems.textContent = `${Product.all[i].name} has ${Product.all[i].votes} Votes`
+
+        // }
+
+        // leftImage.removeEventListener('click', clicker)
+        // middleImage.removeEventListener('click', clicker)
+        // rightImage.removeEventListener('click', clicker)
+        container.removeEventListener('click', clicker);
 
 
         for (let i = 0; i < Product.all.length; i++) {
@@ -202,6 +234,8 @@ function clicker(event) {
     userAttempts++;     
 
 }
+
+
 
 
 
